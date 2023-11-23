@@ -22,4 +22,13 @@ func main() {
 	  router := gin.New()
 	  router.Use(gin.Logger())
 
+	  routes.UserRoutes(router)
+	  router.Use(middleware.Authentication())
+
+	  router.GET("/addcart", app.AddToCart())
+	  router.GET("/removeiteam", app.RemoveIteam())
+	  router.GET("/cartcheckout", app.ByFromCart())
+	  router.GET("/instantrbuy", app.InstantBuy())
+
+
 	}
