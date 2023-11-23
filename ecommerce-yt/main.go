@@ -1,0 +1,25 @@
+package main
+
+import(
+
+	"github.com/murshidxbrt/ecommerce-yt/controllers"
+	"github.com/murshidxbrt/ecommerce-yt/database"
+	"github.com/murshidxbrt/ecommerce-yt/middleware"
+	"github.com/murshidxbrt/ecommerce-yt/routes"
+	"github.com/gin-gonic/gin"
+	
+)
+
+func main() {
+
+	port :=os.Getenv("PORT")
+	  if port == "" {
+		port = "8080"
+	  }
+	  
+	  app := controllers.NewAppliction(database.ProductData(database.Client, "Products"),database.UserData(database.Client, "users"))
+
+	  router := gin.New()
+	  router.Use(gin.Logger())
+
+	}
