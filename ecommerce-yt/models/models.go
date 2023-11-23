@@ -1,25 +1,26 @@
 package models
 
-import(
+import (
 	"time"
+
 	"go.mongodb.org/mogo-driver/bson/primitive"
 )
 
 type User struct{
-	ID 
-	First_Name 					primitive.ObjectID
-	Last_Name 					*string
-	Password					*string
-	Email 						*string
-	Phone						*string
-	Token						*string
-	Refresh_Token 		        *string
-	Created_At					time.Time
-	Updated_At		  		 	time.Time 
-	User_ID						*string
-	UserCart					[]ProductUser
-	Address_Details				[]Address
-	Order_Status				[]Order
+	ID 							primitive.ObjectID				`jason:"_id"bson:"_id `
+	First_Name 					*string 						`jason:"First_Name" `			
+	Last_Name 					*string							`jason:"Last_Name" `
+	Password					*string							`jason:"Password" `
+	Email 						*string							`jason:"Email" `
+	Phone						*string							`jason:"Phone"' `
+	Token						*string							`jason:"Token" `
+	Refresh_Token 		        *string							`jason:"Refresh_Token"`
+	Created_At					time.Time						`jason:"Created_At"`
+	Updated_At		  		 	time.Time 						`jason:"Updated_At"`
+	User_ID						*string							`jason:"User_id"`
+	UserCart					[]ProductUser					`jason:"user_cart" bson:"usercart"`
+	Address_Details				[]Address						`jason:"adress" bson:"address"` 
+	Order_Status				[]Order							`jason:"orders"bson:"orders"`
 }
 
 type Product struct{
