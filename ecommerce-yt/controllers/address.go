@@ -1,33 +1,21 @@
 package controllers
 
 import(
-
+	
 )
 
-func HashPassword (password string) string{
+func AddAddress() gin.HandlerFunc{
 
 }
 
-func VerifyPassword (userPassword string, givenPassword string) (bool, string) {
+func EditHomeAddress() gin.HandlerFunc{
 
 }
 
-func Signup () gin.HandlerFunc {
+func EditWorkAddress() gin.HandlerFunc{
 
 }
 
-func Login() gin.HandlerFunc {
-	
-}
+func DeleteAddress() gin.HandlerFunc{
 
-func ProductViewerAdmin() gin.handlerFunc{
-
-}
-
-func searchProduct() gin.HandlerFunc {
-
-}
-
-func searchProductByQuery() gin.HandlerFunc {
-	
 }
