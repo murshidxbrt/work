@@ -29,6 +29,14 @@ func HashPassword (password string) string{
 
 func VerifyPassword (userPassword string, givenPassword string) (bool, string) {
 	err := bycrypt.CompareHashAndPassword([]byte(givenPassword), []byte(userPassword))
+	valid := true
+	msg := ""
+
+	if err != nil {
+		msg = "Login or Password is incorrect"
+		valid = false
+	}
+	return valid, msg
 }
 
 func Signup () gin.HandlerFunc {
@@ -96,7 +104,6 @@ func Signup () gin.HandlerFunc {
 
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var func (c *gin.Context){
 			var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 			defer cancel()
 
@@ -129,10 +136,9 @@ func Login() gin.HandlerFunc {
 			generate.UpdateAllTockens(token, refreshToken, *founduser.User_ID)
 			c.JSON(http.Statusfound, founduser)
 
-
+		}
 	}
 	
-}
 
 func ProductViewerAdmin() gin.handlerFunc{
 
