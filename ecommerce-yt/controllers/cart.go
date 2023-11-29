@@ -106,7 +106,28 @@ func GetIteamFromCart() gin.Handler {
 
 }
 
- func BuyFromcart() gin.HandlerFunc {
+ func (app *Appliction) BuyFromcart() gin.HandlerFunc {
+
+	return func(c *gin.Context) {
+		userQueryID := c.Query("id")
+
+		if userQueryID == ""{
+			log.Panicln("user id is empty")
+			_ = c.AbortWithError(http.StatusBadRequest, errors.New("UserID is empty"))
+		}
+
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.second)
+
+		defer cancel()
+
+		err := database.BuyIteamFromCart(ctx, app.userCollection ,userQueryID)
+		if err != nil {
+			c.IndentedJSON(http.StatusInternalServerError, err)
+
+		}
+		c.IndentedJSON("sucessfully placed the order")
+		
+	}
 
 }
 
