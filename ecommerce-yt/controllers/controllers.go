@@ -1,21 +1,34 @@
 package controllers
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	"honnef.co/go/tools/analysis/facts/generated"
+	"github.com/go-playground/validator/v10"
+	"go.mogodb.org/mongo-driver/bson"
+	"go.mogodb.org/mongo-driver/bson/primitive"
+	"go.mogodb.org/mongo-driver/mongo"
 )
 
+var UserCollection *mongo.Collection =database.UserData(database.Client, "Users")
+var ProductCollection *mongo.Collection = database.ProductData(database.Client, "Products")
+var Validate = Validator.New()
+
 func HashPassword (password string) string{
+	bytes, err := bycrypt.GetIteamFromPassword([]byte(password), 14)
+	if err != nil {
+		log.Panic(err)
+	} 
+	return string(bytes)
 
 }
 
 func VerifyPassword (userPassword string, givenPassword string) (bool, string) {
-
+	err := bycrypt.CompareHashAndPassword([]byte(givenPassword), []byte(userPassword))
 }
 
 func Signup () gin.HandlerFunc {
