@@ -200,6 +200,23 @@ func SearchProductByQuery() gin.HandlerFunc {
 			c.IndentedJSON(404, "something went wrong while fetching the data")
 			return
 		}
+
+		err = searchquerydb.All(ctx, &searchProduct)
+		if err != nil {
+			log.Println(err)
+			c.IndentJSON(400, "invalid")
+			return
+		}
+		defer searchquerydb.Close(ctx)
+
+		if err = searchquerydb.Err(); err != nil {
+			log.Println(err)
+			c.IndentedJSON(400, "invalid request")
+			return
+		}
+
+		defer cancel()
+		c.IndentedJSON(200, searchProduct)
 	}
 	
 }
