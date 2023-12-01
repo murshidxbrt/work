@@ -26,6 +26,24 @@ func DeleteAddress() gin.HandlerFunc{
 			c.Abort()
 			return
 		}
+
+		addresses := make (make[]models.Address, 0)
+		usert_id, err := primitive.ObjectIDFromhex(user_id)
+		if err != nil {
+			c.IndentedJSON(500, "Internal server error")
+		}
+		var ctx, cancel = context.WithTimeout(context.Background(),100 * time.Second)
+		defer cancel()
+		filter := bson.D{primitive.E(key:"_id", Value: user_id)}
+		update := bson.D{{key:"$set", value: bson.D{primitive.E{key:"address", Value: AddAddress}}}}
+		_, err = UserCollection.UpdateOne(ctx, filter, update)
+		if err != nil {
+			c.IndentedJSON(400, "wrong command")
+			return
+		}
+		defer func()
+		ctx.Done()
+		c.IndentedJSON(200, "Sucessfully Deleted")
 	}
 
 }

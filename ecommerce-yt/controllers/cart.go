@@ -103,6 +103,24 @@ func (app *Appliction) RemoveIteam() gin.HandlerFunc {
 }
 
 func GetIteamFromCart() gin.Handler {
+	return func(c *gin.Context) {
+		user_id := c.Query("id")
+
+		if user_id == "" {
+			c.Header("Content-Type", "application/json")
+			c.JSON(http.StatusNotFound, gin.H{"error": "Invalid id"})
+			c.Abort()
+			return
+		}
+
+		usert_id, _ := primitive.ObjectIDFromHex(user_id)
+
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
+		var filledcart models.User
+		err := UserCollection.FindOne(ctx, bson.D{primitive.E{key: "_id", Value : usert_id}}).Decode(&filledcart)
+	}
 
 }
 
