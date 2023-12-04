@@ -102,8 +102,9 @@ func (app *Appliction) RemoveIteam() gin.HandlerFunc {
 
 }
 
-func GetIteamFromCart() gin.Handler {
-	return func(c *gin.Context) {
+func GetIteamFromCart() gin.Handler{
+
+	return func(c *gin.Context){
 		user_id := c.Query("id")
 
 		if user_id == "" {
@@ -120,6 +121,18 @@ func GetIteamFromCart() gin.Handler {
 
 		var filledcart models.User
 		err := UserCollection.FindOne(ctx, bson.D{primitive.E{key: "_id", Value : usert_id}}).Decode(&filledcart)
+
+		if err != nil {
+			log.Println("err")
+			c.IndentedJSON(500, "not found")
+			return
+		}
+
+		filter_match := bson.D{{key:"$match", Value: bson.D{primitive.E{key: "id", Value:usert_id}}}}
+		unwind := bson.D{{key:"$unwind", Value: bson.D{primitive.E{key:"path", Value:"$usercart"}}}}
+		grouping := bson.D{{key:"$group", Value: bson.D{primitive.E{key:"_id", Value: }}
+	
+	   
 	}
 
 }
