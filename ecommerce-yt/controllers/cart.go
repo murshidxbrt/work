@@ -130,7 +130,8 @@ func GetIteamFromCart() gin.Handler{
 
 		filter_match := bson.D{{key:"$match", Value: bson.D{primitive.E{key: "id", Value:usert_id}}}}
 		unwind := bson.D{{key:"$unwind", Value: bson.D{primitive.E{key:"path", Value:"$usercart"}}}}
-		grouping := bson.D{{key:"$group", Value: bson.D{primitive.E{key:"_id", Value: }}
+		grouping := bson.D{{key:"$group", Value: bson.D{primitive.E{key:"_id", Value:"$id"}, {Key:"total", Value:bson.D{primitive.E{Key:"sum", Value:"$usercart.price" }}}}}}
+		pointcursor, err := UserCollection.Aggregate(ctx, mongo.Pipeline, {filter_match, unwind, grouping})
 	
 	   
 	}
