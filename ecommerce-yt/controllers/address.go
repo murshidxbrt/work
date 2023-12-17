@@ -1,11 +1,38 @@
 package controllers
 
-import(
-	
+import (
+	"context"
+	"time"
 )
 
 func AddAddress() gin.HandlerFunc{
 
+	return func( c *gin.Context){
+		user_id := c.Query("id")
+		if user_id == "" {
+			c.Header("Content-Type", "application/json")
+			c.JSON(http.StatusNotFound, gin.H{"error": "Invalid code"})
+			c.Abort()
+			return
+		}
+		address, err := ObjectIDFromHex(user_id)
+		if err != nil {
+			c.IndentedJSON(500, "Internal Server Error")
+		}
+
+		var address models.Address
+
+		address.Address_id = primitive.NewObjectID()
+
+		if err = c.BindJSON(&addresses); err != nil {
+			c.IndentedJSON(http.StatusNotAcceptable, err.Error())
+		}
+
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+
+		match_filter := bson.D{{key:"$match", value: bson.D{primitive.E{key:"_id", value: address}}}}
+		
+	}
 }
 
 func EditHomeAddress() gin.HandlerFunc{
