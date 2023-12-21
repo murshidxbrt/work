@@ -30,8 +30,9 @@ func AddAddress() gin.HandlerFunc{
 
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
-		match_filter := bson.D{{key:"$match", value: bson.D{primitive.E{key:"_id", value: address}}}}
-		
+		match_filter := bson.D{{key:"$match", Value: bson.D{primitive.E{key:"_id", Vlue: address}}}}
+		unwind := bson.D{{key:"$unwind", Value:bson.D{primitive.E{key:"path", Value: "$addresses"}}}}
+
 	}
 }
 
