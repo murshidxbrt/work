@@ -35,7 +35,7 @@ func AddAddress() gin.HandlerFunc{
 		match_filter := bson.D{{key:"$match", Value: bson.D{primitive.E{Key:"_id", Vlue: address}}}}
 		unwind := bson.D{{Key:"$unwind", Value:bson.D{primitive.E{key:"path", Value: "$address"}}}}
 		groupe := bson.D{{Key:"$group", Value:bson.D{primitive.E{key:"_id", Value:"$address_id"},{key:"count", Value: bson.D{primitive.E{key:"$sum", Value: 1}}}}
-		pontcourser, err :=UserCollection.Aggregate()
+		pontcourser, err :=UserCollection.Aggregate(ctx, mongo.Pipeline{match_filter,unwind, group})
 
 
 	}
