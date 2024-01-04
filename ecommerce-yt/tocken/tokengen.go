@@ -13,7 +13,10 @@ type SignedDetails struct {
 	jwt.StandardClaims
 
 }
-var SECRET_KEY
+
+var UserDta *mongo.Collectiion = database.userData(database.Client, "Users")
+
+var SECRET_KEY - os.Getenv("SECRET_KEY")
 
 func TockenGenerator(email string, firstName string, lastName string, uid string)(signedtocken string, singnedrefreshtoken string,  err error){
 	claims := &SignedDetails{
@@ -33,7 +36,12 @@ func TockenGenerator(email string, firstName string, lastName string, uid string
 
  	}
 
-	tocken, :=  jwtNewWithClaims(jwt.SingingMethodHS256, claims).SingnedString([]byte(SECRET_KEY))
+	tocken, err :=  jwtNewWithClaims(jwt.SingingMethodHS256, claims).SingnedString([]byte(SECRET_KEY))
+		if err != nil {
+			return "", "", err
+		}
+
+		refreshtoken, err := jwtNewWithClaims(jwt.SingingMethodHS384, refreshclaims).
 
 }
 
