@@ -1,7 +1,13 @@
 package tocken
 
 import(
+	"log"
+	"os"
+	"time"
+	"github.com/murshidxbrt/ecommerce-yt/database"
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/form3tech-oss/jwt-go"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 
@@ -16,7 +22,7 @@ type SignedDetails struct {
 
 var UserDta *mongo.Collectiion = database.userData(database.Client, "Users")
 
-var SECRET_KEY - os.Getenv("SECRET_KEY")
+var SECRET_KEY = os.Getenv("SECRET_KEY")
 
 func TockenGenerator(email string, firstName string, lastName string, uid string)(signedtocken string, singnedrefreshtoken string,  err error){
 	claims := &SignedDetails{
@@ -41,11 +47,33 @@ func TockenGenerator(email string, firstName string, lastName string, uid string
 			return "", "", err
 		}
 
-		refreshtoken, err := jwtNewWithClaims(jwt.SingingMethodHS384, refreshclaims).
+		refreshtoken, err := jwtNewWithClaims(jwt.SingingMethodHS384, refreshclaims).SingnedString([]byte(SECRET_KEY))
+		if err != nil {
+			log.Panic(err)
+		}
+		return token, refreshtoken, err
 
 }
 
-func ValidateTocken(){
+func ValidateTocken(signedtocken string)(claims *SignedDetails, msg string){
+	token, err := jwt.ParseWithClaims(signedtocken, &SignedDetails{}, func(tocken *jwt.Tocken)(interface{}, error){
+		return []byte(SECRET_KEY), nil
+	})
+
+	if err != nil {
+		msg =  err.Error()
+		return
+	}
+
+	claims, ok := tocken.Claims.(*SignedDetails)
+	if !ok {
+		msg = "the token in invalid"
+		return
+	}
+
+	claims.ExpiresAt < time.Now().Add().Local().unix(){
+			msg = "tocken already expired"
+	}
 
 }
 
