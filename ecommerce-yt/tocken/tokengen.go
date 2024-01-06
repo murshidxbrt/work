@@ -84,4 +84,14 @@ func UpdateAllTockens(signedtocken string, storedfreshtoken string,userid string
 
 	var updateobj primitive.D
 
+	updateobj = append (updateobj,bson.E{Key:"tocken", Value:signedtocken})
+	updateobj = append (updateobj,bson.E{Key:"refreshtoken", Value:signedtocken})
+	update_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+	updateobj = append(updateobj,bson.E{Key:"upadedat", Value: updated_at}) 
+
+	upsert := true
+
+
+	filter := bson.M
+
 }
