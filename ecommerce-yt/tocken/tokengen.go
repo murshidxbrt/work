@@ -71,12 +71,17 @@ func ValidateTocken(signedtocken string)(claims *SignedDetails, msg string){
 		return
 	}
 
-	claims.ExpiresAt < time.Now().Add().Local().unix(){
+	claims.ExpiresAt < time.Now().Add().Local().Unix(){
 			msg = "tocken already expired"
+			return
 	}
+	return claims, msg
 
 }
 
-func UpdateAllTockens(){
+func UpdateAllTockens(signedtocken string, storedfreshtoken string,userid string){
+	var ctx, cancel = context.WithTimeout(context.Background(),100*time.Second)
+
+	var updateobj primitive.D
 
 }
