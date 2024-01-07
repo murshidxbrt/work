@@ -92,6 +92,17 @@ func UpdateAllTockens(signedtocken string, storedfreshtoken string,userid string
 	upsert := true
 
 
-	filter := bson.M
-
+	filter := bson.M{"user_id": userid}
+	opt := options.UpdateOptions{
+		Upsert: &upsert,
+	}
+	-, err := UserData.UpdateOne(ctx, filter, bson.D{
+		{Key:"$set", Value:updateobj},
+	},
+	&opt)
+	defer cancel()
+	if err != nil {
+		log.Panic(err)
+		return
+	}
 }
