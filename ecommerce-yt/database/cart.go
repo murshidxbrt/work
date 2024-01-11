@@ -36,7 +36,7 @@ func AddProductToCart(ctx context.Context, prodCollection, userCollection *mongo
 	}
 
 	filter :=bson.D{primitive.E{key: id, value: id}}
-	update := bson.D{{key: "push"}}
+	update := bson.D{{key: "$push", Value: bson.D{primitive.E{Key:"usercart", Value: bson.D{{Key:"$each", Value:productCart}}}}}}
 
 	_, err := userCollection.UpdateOne(ctx, filter, update)
 	if err!=nil {
