@@ -1,7 +1,9 @@
 package controllers
 
-import(
+import (
+	"context"
 
+	"github.com/murshidxbrt/ecommerce-yt/models"
 )
 var (
 
@@ -14,8 +16,24 @@ var (
 	ErrCantBuyCartIteam = errors.New("cannot update the Purchase")
 
 )
-func AddProductToCart(){
+func AddProductToCart(ctx context.Context, prodCollection, userCollection *mongo.Collection, productID primitive.ObjectID, userID string) error {
+	searchfromdb, err := prodCollection.Find(ctx, bson.M{"_id": productID})
+	if err != nil {
+		log.Println(err)
+		return ErrCantFindProduct
+	}
+	var productCart []models.ProductUser
+	err = searchfromdb.All(ctx, &productcart)
+	if err != nil {
+		log.Println(err)
+		return ErrCantDecodeProduct
+	}
 
+	id, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		log.Println(err)
+		return ErrUserIdIsNotValid
+	}
 }
 
 func RemoveCartIteam(){
