@@ -34,6 +34,15 @@ func AddProductToCart(ctx context.Context, prodCollection, userCollection *mongo
 		log.Println(err)
 		return ErrUserIdIsNotValid
 	}
+
+	filter :=bson.D{primitive.E{key: id, value: id}}
+	update := bson.D{{key: "push"}}
+
+	_, err := userCollection.UpdateOne(ctx, filter, update)
+	if err!=nil {
+		return ErrCantUpdateUser
+	}
+	return nil
 }
 
 func RemoveCartIteam(){
