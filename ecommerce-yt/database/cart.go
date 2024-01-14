@@ -70,6 +70,19 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 		return ErrUserIdIsNotValid
 	}
 
+	var getcartitems models.User
+	var ordercart models.Order
+
+	ordercart.Order_ID = primitive.NewObjectID()
+	ordercart.Ordered_At = time.Now()
+	ordercart.Order_Cart = make([]models.ProductUser, 0)
+	ordercart.Payment_Method.COD = true
+
+	unwind := bson.D{{Key: "$unwind", value:bson.D{primitive.E{Key:"path", Value"$usercart"}}}}
+	grouping := bson.D{{Key:"$group", Value:bson.D{primitive.E{Key:"_id", Value:"$id"}, {Key:"total", Value: bson.D{primitive.E{Key:"$sum", Value:"$usercart.price"}}}}}}
+	currentresults, err := userCollectioon.Aggregate(ctx, mongo.Pipeline{unwind , grouping}) 
+	
+
 }
 
 func InstantBuyer(){
