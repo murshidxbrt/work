@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"context"
+	"log"
 
 	"github.com/murshidxbrt/ecommerce-yt/models"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 var (
 
@@ -35,7 +37,7 @@ func AddProductToCart(ctx context.Context, prodCollection, userCollection *mongo
 		return ErrUserIdIsNotValid
 	}
 
-	filter :=bson.D{primitive.E{key: id, value: id}}
+	filter :=bson.D{primitive.E{key: "_id", value: id}}
 	update := bson.D{{key: "$push", Value: bson.D{primitive.E{Key:"usercart", Value: bson.D{{Key:"$each", Value:productCart}}}}}}
 
 	_, err := userCollection.UpdateOne(ctx, filter, update)
@@ -45,11 +47,28 @@ func AddProductToCart(ctx context.Context, prodCollection, userCollection *mongo
 	return nil
 }
 
-func RemoveCartIteam(){
-
+func RemoveCartIteam(ctx context.Context, prodCollection, userCollection *mongo.Collection, productID primitive.ObjectID, userID string) error {
+	id , err:= primitive.ObjectIDFromHex(userID) 
+	if err!=nil {
+		log.Println(err)
+		return ErrUserIdIsNotValid
+	}
+	filter := bson.D(primitive.E{Key:"_id", Value: id})
+	update := bson.M{"$pull": bson.M{"usercart":bson.M{"_id":productID}}}
+	_, err = UpdateMany(ctx, filter, update )
+	if err!=nil {
+		return ErrCantRemoveIteamCart
+	}
+	return nil
 }
 
-func BuyIteamFromcart(){
+func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   userID string) error{
+
+	id, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		log.Println(err)
+		return ErrUserIdIsNotValid
+	}
 
 }
 
