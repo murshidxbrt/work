@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/murshidxbrt/ecommerce-yt/models"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 var (
@@ -81,7 +82,16 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 	unwind := bson.D{{Key: "$unwind", value:bson.D{primitive.E{Key:"path", Value"$usercart"}}}}
 	grouping := bson.D{{Key:"$group", Value:bson.D{primitive.E{Key:"_id", Value:"$id"}, {Key:"total", Value: bson.D{primitive.E{Key:"$sum", Value:"$usercart.price"}}}}}}
 	currentresults, err := userCollectioon.Aggregate(ctx, mongo.Pipeline{unwind , grouping}) 
-	
+	ctx.Done()
+	if err != nil {
+		panic(err)
+	}
+	var getusercart []bson.M
+	if err = currentresult.All(ctx, &getusercart); err != nil {
+		panic(err)
+
+	}
+	var total_price int32
 
 }
 
