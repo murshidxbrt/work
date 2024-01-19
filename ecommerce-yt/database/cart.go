@@ -93,6 +93,11 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 	}
 	var total_price int32
 
+	for _, user_iteam := range grtusercart{
+		price := user_iteam["total"]
+		total_price = price.(int32)
+	}
+
 }
 
 func InstantBuyer(){
