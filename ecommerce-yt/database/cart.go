@@ -79,7 +79,7 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 	ordercart.Order_Cart = make([]models.ProductUser, 0)
 	ordercart.Payment_Method.COD = true
 
-	unwind := bson.D{{Key: "$unwind", value:bson.D{primitive.E{Key:"path", Value"$usercart"}}}}
+	unwind := bson.D{{Key: "$unwind", Value:bson.D{primitive.E{Key:"path", Value"$usercart"}}}}
 	grouping := bson.D{{Key:"$group", Value:bson.D{primitive.E{Key:"_id", Value:"$id"}, {Key:"total", Value: bson.D{primitive.E{Key:"$sum", Value:"$usercart.price"}}}}}}
 	currentresults, err := userCollectioon.Aggregate(ctx, mongo.Pipeline{unwind , grouping}) 
 	ctx.Done()
@@ -101,7 +101,14 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 
 	filter := bson.D{primitive.E{Key:"_id", Value:id}}
 	update := bson.D{{Key:"$push", Value:bson.D{primitive.E{Key:"orders", Value:ordercart}}}}
-	userCollection.UpdateMany(ctx, filter, update)
+	_, err = userCollection.UpdateMany(ctx, filter, update)
+	if err != nil {
+		log.Println(err)
+	}
+	userCollection.FindOne(ctx, bson.D{primitive.E{Key:"_id", Value:id }}.Decode(&getcartitems))
+	if err!=nil {
+		log.Println(err)
+	}
 
 }
 
