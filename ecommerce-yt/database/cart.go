@@ -99,8 +99,9 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 	}
 	ordercart.Price = int(total_price)
 
-	filter := 
-	update := 
+	filter := bson.D{primitive.E{Key:"_id", Value:id}}
+	update := bson.D{{Key:"$push", Value:bson.D{primitive.E{Key:"orders", Value:ordercart}}}}
+	userCollection.UpdateMany(ctx, filter, update)
 
 }
 
