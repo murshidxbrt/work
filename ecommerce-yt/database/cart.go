@@ -64,6 +64,13 @@ func RemoveCartIteam(ctx context.Context, prodCollection, userCollection *mongo.
 }
 
 func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   userID string) error{
+	// fetch the cart of the user
+	// find the cart total 
+	// create an order with the iteams
+	// added order to the user collection
+	// added iteams in the cart to order list
+	// empty up the cart
+
 
 	id, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
@@ -109,6 +116,21 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 	if err!=nil {
 		log.Println(err)
 	}
+
+	filter2 := bson.D{primitive.E{Key:"id", Value:id}}
+	update2 := bson.M{"$push": bson.M{"orders.$[].order_list:": bson.M{"$each":getcartiteams.UserCart}}}
+	_, err = userCollection.UpdateOne(ctx, filter2, update2)
+	if err != nil {
+		log.Println(err)
+	}
+
+	usercart_empty := make([]models.ProductUser, 0)
+	filter3 := bson.D{primitive.E{Key:"_id", Value: id}}
+	update3 := bson.D{{Key:"$set", Value:bson.D{primitive.E{Key:"usercart", Value: usercart_empty}}}}
+	_, err!=nil{
+		return ErrCantBuyCartItem
+	}
+	return nil
 
 }
 
