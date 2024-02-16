@@ -135,7 +135,15 @@ func BuyIteamFromcart(ctx context.Context, userCollection *mongo.Collection,   u
 
 }
 
-func InstantBuyer(){
+func InstantBuyer(ctx context.Context, prodCollection, userCollection *mongo.Collection, productID primitive.ObjectID, UserID string) error {
+	id, err := primitive.ObjectIDFromHex(UserID)
 
+	if err != nil{
+		log.Println(err)
+		return ErrUserIdNotValid
+	}
+
+	var product_details models.ProductUser
+	var 
 }
 
