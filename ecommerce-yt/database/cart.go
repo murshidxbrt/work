@@ -144,6 +144,8 @@ func InstantBuyer(ctx context.Context, prodCollection, userCollection *mongo.Col
 	}
 
 	var product_details models.ProductUser
-	var 
+	var order_detail models.Order
+
+	
 }
 
