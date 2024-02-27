@@ -146,6 +146,30 @@ func InstantBuyer(ctx context.Context, prodCollection, userCollection *mongo.Col
 	var product_details models.ProductUser
 	var order_detail models.Order
 
-	
+	orders_details.Order_ID = primitive.NewObjectID()
+	orders_details.Ordered_At = time.Now()
+	order_detail.Order_cart = make([]models.ProductUser, 0)
+	order_detail.Payment_Method.COD = true
+	err = prodCollection.FindOne(ctx, bson.D{primitive.E{Key: "_id", Value: productID}}).Decode(&product_details)
+	if err != nil {
+		log.Println(err)
+	}
+	orders_detail.Price = product_details.Price
+
+	filter :=
+	update := 
+	_, err = userCollection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		log.Println(err)
+	}
+
+	filter2 :=
+	update2 :=
+
+	_, err = userCollection.UpdateOne(ctx, filter2, update2)
+	if err != nil {
+		lo
+	}
+
 }
 
