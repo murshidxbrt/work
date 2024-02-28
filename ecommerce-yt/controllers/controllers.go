@@ -1,17 +1,21 @@
 package controllers
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/go-playground/validator/v10"
+t
+	"github.com/murshidxbrt/work/ecommerce-yt/database"
+	"github.com/murshidxbrt/work/ecommerce-yt/models"
+	 generate "github.com/murshidxbrt/work/ecommerce-yt/tockens"
+	"github.com/gin-gonic/gin"
+    "github.com/go-playground/validator/v10"
 	"go.mogodb.org/mongo-driver/bson"
 	"go.mogodb.org/mongo-driver/bson/primitive"
 	"go.mogodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var UserCollection *mongo.Collection =database.UserData(database.Client, "Users")
