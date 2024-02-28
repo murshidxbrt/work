@@ -156,20 +156,21 @@ func InstantBuyer(ctx context.Context, prodCollection, userCollection *mongo.Col
 	}
 	orders_detail.Price = product_details.Price
 
-	filter :=
-	update := 
+	filter := bson.D{primitive.E{Key:"_id", Value: id}}
+	update := bson.D{{Key:"push", Value:bson.D{primitive.E{Key:"orders", Value:orders_details }}}}
 	_, err = userCollection.UpdateOne(ctx, filter, update)
 	if err != nil {
 		log.Println(err)
 	}
 
-	filter2 :=
-	update2 :=
+	filter2 := bson.D{primitive.E{Key:"_id", Value: id }}
+	update2 := bson.M{"$push" :bson.M{"orders.$[].order_list":product_details} }
 
 	_, err = userCollection.UpdateOne(ctx, filter2, update2)
 	if err != nil {
-		lo
+		log.Println(err)
 	}
+	return nil
 
 }
 
