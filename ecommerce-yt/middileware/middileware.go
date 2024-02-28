@@ -1,8 +1,8 @@
 package middileware
 
 import(
-	token "github.com/murshidxbrt/ecommerce-yt/tokens"
 	"net/http"
+	token "github.com/murshidxbrt/ecommerce-yt/tokens"
 	"github.com/gin-gonic/gin"
 )
 

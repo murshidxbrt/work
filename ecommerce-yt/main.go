@@ -1,6 +1,8 @@
 package main
 
 import(
+	"log"
+	"os"
 
 	"github.com/murshidxbrt/ecommerce-yt/controllers"
 	"github.com/murshidxbrt/ecommerce-yt/database"

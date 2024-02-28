@@ -110,7 +110,7 @@ func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 			var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 			defer cancel()
-
+			var founduser moodels.User
 			var user models.User
 			if err := c.BindJSON(&user); err != nil {
 				c.JSON(http.StatusBadRequest, gin.H {"error": err})
@@ -145,7 +145,23 @@ func Login() gin.HandlerFunc {
 	
 
 func ProductViewerAdmin() gin.handlerFunc{
-
+	return func(c *gin.Context){
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		var product models.Product
+		defer cancel()
+		if err := c.BindJSON(&product); err != nil {
+			c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+			return
+		}
+		product.Product_ID = primitive.NewObjectID()
+		_,anyerr := ProductCollection.InsertOne(ctx,products)
+		if anyerr != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error":"not inserted" })
+			return
+		}
+		defer cancel()
+		c.JSON(http.StatusOK, "successfully added")
+	}
 }
 
 func SearchProduct() gin.HandlerFunc {
