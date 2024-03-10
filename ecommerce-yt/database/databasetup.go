@@ -1,51 +1,46 @@
 package database
 
 import (
-
-	"fmt"
 	"context"
 	"log"
 	"time"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	
 )
 
-func DBset() *mongo.Client{
-
+func DBSetup() *mongo.Client {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
-		if err!=nil{
-			log.Fatal(err)
-		}
+	if err != nil {
+		log.Fatal(err)
+	}
 
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-		defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-		err = client.Connect(ctx)
+	err = client.Ping(ctx, nil)
+	if err != nil {
+		log.Println("failed to connect to MongoDB:", err)
+		return nil
+	}
 
-		if err != nil{
-			log.Fatal(err)
-		}
-		err = client.Ping(context,TODO() , nil)
-		if err != nil{{
-			log.Println("faild to connect to Mongdb :(")
-			return nil
-		}
-		fmt.Println("Sucessfully connected to Mongdb")
-		return client
+	log.Println("Successfully connected to MongoDB")
+	return client
 }
 
-	var Client *mongo.Client =DBset()
+var Client *mongo.Client = DBSetup()
 
-	
-func UserData(client*mongo.Client, collectionName string) *mongo.Collection{
-	var  collection *mongo.Collection = client.Database("Ecommerce").Collection(collectionName)
+func UserData(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Ecommerce").Collection(collectionName)
 	return collection
-
 }
-func ProductData(client *mongo.Client, collectionName string) *mongo.Collection{
-	var productCollection *mongo.Collection = client.Database("Ecommerce").Collection(collectionName)
-	return productcollection
 
+func ProductData(client *mongo.Client, collectionName string) *mongo.Collection {
+	productCollection := client.Database("Ecommerce").Collection(collectionName)
+	return productCollection
 }
