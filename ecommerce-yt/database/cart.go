@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/murshidxbrt/ecommerce-yt/models"
+	"github.com/murshidxbrt/work/ecommerce-yt/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

@@ -4,7 +4,7 @@ import(
 	"log"
 	"os"
 	"time"
-	"github.com/murshidxbrt/ecommerce-yt/database"
+	"github.com/murshidxbrt/work/ecommerce-yt/database"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/form3tech-oss/jwt-go"
 	"go.mongodb.org/mongo-driver/mongo"
